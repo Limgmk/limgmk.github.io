@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My Go Journey content/_index.md on Limgmk&#39;s Blog</title>
+    <link>https://limgmk.github.io/</link>
+    <description>Recent content in My Go Journey content/_index.md on Limgmk&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 14 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://limgmk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git 使用笔记: add/push 时忽略/替换指定行</title>
+      <link>https://limgmk.github.io/posts/git-filter/</link>
+      <pubDate>Tue, 22 Sep 2020 00:20:16 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/git-filter/</guid>
+      <description>Git 使用笔记: add/push 时忽略/替换指定行 问题 最近做了一个 Telegram 的通知机器人, 但是每次推送代码的之前我都要在配置文件里面把机器人的 token 注释掉，
+这样弄了几次以后，我终于决定找个让 Git 忽略指定行的方法。
+1. Git filter 的使用 Google 了一番之后，我发现 Git 的 filter 功能大致可以实现想要的效果
+首先先在项目中添加 .gitattributes 文件, 编辑并添加以下内容:
+*.yaml filter=yaml 意思是项目中所有的 YAML 文件都会使用名为 yaml 的过滤器
+然后需要定义过滤规则, 在命令行执行:
+git config --global filter.yaml.clean &amp;quot;sed &#39;/#GITIGNORE$/d&#39;&amp;quot; 即为 Git 添加一个过滤器，使用该过滤器的文件在被 Git 管理时会通过 sed &#39;/#GITIGNORE$/d&#39; 过滤，
+并将过滤后的结果加入管理。很明显，sed &#39;/#GITIGNORE$/d&#39; 的过滤结果就是将以 #GITIGNORE
+结尾的行删除。这样一来，只要在想要忽略的行后面加上 #GITIGNORE 就可以在提交代码时去掉这一行。
+2. 更复杂的功能 上面的方法只能过滤一行，那么更加复杂的功能，比如过滤多行，甚至将某一行替换为任意想要的内容也可以做到吗？
+当然可以，sed 十分强大，只要利用得当，上述功能都是可以实现的。
+2.1 多行忽略 $ cat config.yaml | sed &#39;/^#GITIGNORE&amp;lt;&amp;lt;&amp;lt;/,/^#GITIGNORE&amp;gt;&amp;gt;&amp;gt;/d&#39; 效果: config.</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu 20.04 上安装 MySQL 8.0 并配置远程登录</title>
+      <link>https://limgmk.github.io/posts/mysql-install-and-setting/</link>
+      <pubDate>Sat, 12 Sep 2020 19:37:54 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/mysql-install-and-setting/</guid>
+      <description>在 Ubuntu 20.04 上安装 MySQL 8.0 并配置远程登录   直接从仓库安装 mysql-server :
+$ sudo apt update $ sudo apt install mysql-server   安装完成后服务会自动启动，直接登录(使用 root 用户)即可:
+# mysql -uroot -p   登录之后切换 Database:
+mysql&amp;gt; use mysql; 修改验证插件:
+mysql&amp;gt; update user set plugin=&#39;mysql_native_password&#39; where user=&#39;root&#39;; 修改密码:
+mysql&amp;gt; alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;1234&#39;; 修改 host:
+mysql&amp;gt; update user set host=&#39;%&#39; where user=&#39;root&#39;;   修改 /etc/mysql/mysql.conf.d/mysqld.cnf 配置文件:
+将 bind-address 注释掉或者修改为: bind-address = 0.</description>
+    </item>
+    
+    <item>
+      <title>解决 Archlinux 上 Intellij Idea 缩放异常</title>
+      <link>https://limgmk.github.io/posts/linux-intellij-idea/</link>
+      <pubDate>Wed, 22 Jul 2020 20:26:08 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/linux-intellij-idea/</guid>
+      <description>解决 Archlinux 上 Intellij Idea 缩放异常 linux 上的 IntelliJ IDEA 在 14 版本以后会默认开启 HiDPI，
+这在高分屏上效果很好，但是在 1080p 的显示器上 UI 看起来会过大。
+解决办法是修改 ~/.config/JetBrains/IntelliJIdea2020.1/idea64.vmoptions
+在文件末尾加上一行: -Dhidpi=false
+之后重启 IntelliJ IDEA 即可</description>
+    </item>
+    
+    <item>
+      <title>在 Archlinux 上安装 deepin-wine-qq</title>
+      <link>https://limgmk.github.io/posts/arch-deepin-qq/</link>
+      <pubDate>Wed, 22 Jul 2020 20:25:49 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/arch-deepin-qq/</guid>
+      <description>在 Archlinux 上安装 deepin-wine-qq   安装 QQ:
+$ yay -S deepin.com.qq.im 或者 TIM:
+$ yay -S deepin.com.qq.office   安装 xsettingd :
+$ yay -S xsettingsd (Archlinux Wiki 上的方案是安装 gnome-settings-daemon, 但是 gnome-settings-daemon 会改变 KDE 的 DPI, 导致 deepin-wine 应用字体模糊, 因此使用 xsettingd 替代)
+将 xsettingd 设置为随桌面自启, 也可以更改 QQ/TIM 的启动脚本, 在启动应用的时候启用 xsettingd
+  对于 Nvidia 显卡, 安装 deepin.com.qq.im 之后还需要安装lib32-nvidia-utils
+$ yay -S lib32-nvidia-utils PS: TIM 不用执行此步骤即可正常使用
+  </description>
+    </item>
+    
+    <item>
+      <title>在 ArchWSL 中开启 ssh 服务</title>
+      <link>https://limgmk.github.io/posts/arch-sshd-service/</link>
+      <pubDate>Fri, 22 May 2020 01:18:50 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/arch-sshd-service/</guid>
+      <description>在 ArchWSL 中开启 ssh 服务 ArchWSL 中默认是没有ssh服务的, 但是可以模仿 Ubuntu WSL 的方案自己创建一个服务, 具体步骤如下:
+  将服务脚本放置到 /etc/init.d 目录下
+这里可以直接使用 UbuntuWSL 的脚本
+  试着运行一下脚本:
+$ sudo /etc/init.d/ssh 发现报错: line 25: /lib/lsb/init-functions: No such file or directory
+把 UbuntuWSL 中的 /lib/lsb/init-fuctions 复制到 ArchWSL 的相同目录下
+  再试着运行一下
+这次错误不一样: start-stop-daemon: command not found
+在 UbuntuWSL 中执行命令:
+$ which start-stop-daemon 得到 start-stop-daemon 的路径 /sbin/start-stop-daemon
+同样将该文件复制到 ArchWSL 中的相同目录下
+  再再试着运行一下
+还是报错: no hostkeys available -- exiting.</description>
+    </item>
+    
+    <item>
+      <title>更改 date 命令的默认输出格式</title>
+      <link>https://limgmk.github.io/posts/date-default-format/</link>
+      <pubDate>Wed, 22 Apr 2020 00:57:17 +0800</pubDate>
+      
+      <guid>https://limgmk.github.io/posts/date-default-format/</guid>
+      <description>更改 date 命令的默认输出格式   首先查看一下系统的语言环境:
+$ echo $LANG   假如语言环境是: en_US.UTF-8,
+修改对应文件:
+# vi /usr/share/i18n/locales/en_US   找到 date_fmt 这一行并对其修改 (没有就新加一行)
+比如改成
+date_fmt &amp;quot;%a %b %e %H:%M:%S %Z %Y&amp;quot; 关于date 命令的格式化, 可以到 这里 查看详细。
+  执行命令:
+$ sudo locale-gen en_US.UTF-8 再输入 date 命令查看, 默认的日期格式应该已经改变了。
+  </description>
+    </item>
+    
+  </channel>
+</rss>

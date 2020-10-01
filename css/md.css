@@ -1,0 +1,303 @@
+.post-content a {
+    color: #4183c4
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    position: relative;
+    margin-top: 1.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    cursor: text;
+    color: #142331
+}
+
+.post-content h1:hover a.anchor,
+.post-content h2:hover a.anchor,
+.post-content h3:hover a.anchor,
+.post-content h4:hover a.anchor,
+.post-content h5:hover a.anchor,
+.post-content h6:hover a.anchor {
+    text-decoration: none
+}
+
+.post-content h1 code,
+.post-content h1 tt,
+.post-content h2 code,
+.post-content h2 tt,
+.post-content h3 code,
+.post-content h3 tt,
+.post-content h4 code,
+.post-content h4 tt,
+.post-content h5 code,
+.post-content h5 tt,
+.post-content h6 code,
+.post-content h6 tt {
+    font-size: inherit
+}
+
+.post-content h1 {
+    text-align: center;
+    padding-bottom: .3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    margin: 1em auto 1.2em
+}
+
+.post-content h1:after {
+    border-bottom: 2px dashed #afec9e;
+    content: '';
+    width: 100px;
+    display: block;
+    margin: .2em auto 0;
+    height: 2px
+}
+
+.post-content h2 {
+    font-size: 1.75em;
+    padding-left: 9px;
+    line-height: 1.4;
+    border-left: 6px solid #cce5ff
+}
+
+.post-content h3 {
+    font-size: 1.5em;
+    line-height: 1.43
+}
+
+.post-content h3:before {
+    border-radius: 50%;
+    background-color: #9ed0ff;
+    content: '';
+    width: 6px;
+    display: inline-block;
+    height: 6px;
+    vertical-align: middle;
+    margin-bottom: .18em;
+    margin-right: 8px
+}
+
+.post-content h4 {
+    font-size: 1.25em
+}
+
+.post-content h4:before {
+    background-color: #9ed0ff;
+    content: '';
+    width: 6px;
+    display: inline-block;
+    height: 2px;
+    vertical-align: middle;
+    margin-bottom: .18em;
+    margin-right: 8px
+}
+
+.post-content h5 {
+    font-size: 1em
+}
+
+.post-content h6 {
+    font-size: 1em;
+    color: #777
+}
+
+.post-content blockquote,
+.post-content dl,
+.post-content ol,
+.post-content p,
+.post-content table,
+.post-content ul {
+    margin: .8em 0
+}
+
+.post-content li>ol,
+.post-content li>ul {
+    margin: 0
+}
+
+.post-content hr {
+    height: .25em;
+    padding: 0;
+    margin: 24px 0;
+    background-color: #e1e4e8;
+    border: 0
+}
+
+.post-content a:first-child h1,
+.post-content a:first-child h2,
+.post-content a:first-child h3,
+.post-content a:first-child h4,
+.post-content a:first-child h5,
+.post-content a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0
+}
+
+.post-content h1 p,
+.post-content h2 p,
+.post-content h3 p,
+.post-content h4 p,
+.post-content h5 p,
+.post-content h6 p {
+    margin-top: 0
+}
+
+.post-content li p.first {
+    display: inline-block
+}
+
+.post-content ol,
+.post-content ul {
+    padding-left: 30px
+}
+
+.post-content ol:first-child,
+.post-content ul:first-child {
+    margin-top: 0
+}
+
+.post-content ol:last-child,
+.post-content ul:last-child {
+    margin-bottom: 0
+}
+
+.post-content blockquote {
+    border-left: 4px dotted #e5e8e8;
+    padding: 0 12px;
+    color: #444;
+    font-size: .9em
+}
+
+.post-content blockquote blockquote {
+    padding-right: 0
+}
+
+.post-content table {
+    padding: 0;
+    word-break: initial
+}
+
+.post-content table tr {
+    border-top: 1px solid #dadfe6;
+    margin: 0;
+    padding: 0
+}
+
+.post-content table.md-table tr:nth-child(2n) {
+    background-color: #fafbfc
+}
+
+.post-content table tr td,
+.post-content table tr th {
+    border: 1px solid #dadfe6;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px
+}
+
+.post-content table tr td:first-child,
+.post-content table tr th:first-child {
+    margin-top: 0
+}
+
+.post-content table tr td:last-child,
+.post-content table tr th:last-child {
+    margin-bottom: 0
+}
+
+.post-content .CodeMirror-gutters {
+    border-right: 1px solid #ddd
+}
+
+.post-content .md-fences,
+.post-content code,
+.post-content tt {
+    font-size: 90%;
+    border-radius: 3px;
+    font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, Courier, monospace
+}
+
+.post-content code,
+.post-content tt {
+    margin: 0 2px;
+    padding: 2px 4px;
+    background-color: #e2f0ff
+}
+
+.post-content .md-fences {
+    background-color: #f6f8fa;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding: 12px 1em
+}
+
+.post-content .md-task-list-item>input {
+    margin-left: -1.45em;
+    margin-top: calc(1em - 10px)
+}
+
+.post-content #write pre.md-meta-block {
+    padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7faf6;
+    border: 0;
+    border-radius: 3px;
+    color: #777;
+    margin-top: 0 !important
+}
+
+.post-content .mathjax-block>.code-tooltip {
+    bottom: .375rem
+}
+
+
+.post-content .md-image>.md-meta {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: "SF Mono", Consolas, "Liberation Mono", Courier, monospace;
+    padding: 2px 4px 0;
+    font-size: .9em;
+    color: inherit
+}
+
+.post-content .md-tag {
+    color: inherit
+}
+
+.post-content .md-toc {
+    margin-top: 20px;
+    padding-bottom: 20px
+}
+
+.post-content .sidebar-tabs {
+    border-bottom: none
+}
+
+.post-content .on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, .12)
+}
+
+.post-content b,
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6,
+.post-content strong {
+    font-weight: 600
+}
+
+.post-content h1,
+.post-content table tr th {
+    font-weight: 400
+}
+
+.post-content .file-list-item-file-name {
+    font-weight: 500
+}

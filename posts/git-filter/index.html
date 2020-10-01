@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+    <title>Limgmk's Blog</title>
+
+    <script src="/lib/jquery/jquery.js"></script>
+    <script defer src="/js/ripple.js"></script>
+    <script src="/js/leem.js"></script>
+    <script src="/lib/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/ripple.css">
+    <link rel="stylesheet" href="/css/leem.css">
+    <link rel="stylesheet" href="/css/md.css" />
+    <link rel="stylesheet" href="/lib/highlight/styles/default.css">
+    <link rel=" stylesheet" href="/css/toc.css" />
+</head><body><style>
+     
+    .drawer {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: var(--drawer-width);
+        background-color: #ffffff;
+        position: fixed;
+        height: 150%;
+        overflow: auto;
+        box-shadow: 0 1px 5px rgba(49, 49, 49, 0.6);
+        transition: 0.3s;
+        z-index: 500;
+    }
+
+    .drawer-brand {
+        width: 100%;
+        height: 209px;
+        padding-left: 30px;
+        background-color: #3E66D1;
+        color: #ffffff;
+    }
+
+    .user-favicon {
+        width: 100px;
+        height: 100px;
+        border-radius: 100px;
+    }
+
+    .drawer-brand h4 {
+        margin: 10px 0;
+    }
+
+    .drawer-brand .email {
+        font-size: 13px;
+        color: #ffffff;
+    }
+
+    .drawer-brand .email:hover {
+        text-decoration: #ffffff;
+    }
+
+    .drawer ul {
+        padding: 0;
+        list-style: none;
+        list-style-type: none;
+        width: 100%;
+        margin: 0 atuo;
+        display: block;
+    }
+
+    .drawer li {
+        width: 240px;
+        padding: 0 20px;
+        list-style-type: none;
+        margin: 0 atuo;
+        display: block;
+        font-size: 15px;
+    }
+
+    .drawer li:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .drawer li a {
+        display: block;
+        height: 44px;
+        line-height: 44px;
+        font-weight: 600;
+        color: #727272;
+        text-decoration: none;
+    }
+
+    .drawer li a:hover {
+        color: var(--theme-color);
+    }
+
+    .drawer li a i {
+        width: 48px;
+        text-align: left;
+    }
+</style>
+
+<div id="drawer" class="drawer">
+    <div id="drawer-brand" class="drawer-brand vertical-center">
+        
+        <div>
+            <img class="user-favicon" src="/img/user-favicon-white.jpg">
+            <h4>Limgmk</h4>
+            <a class="email" href="mailto:limgmkgm@gmail.com" target="_blank">limgmkgm@gmail.com</a>
+        </div>
+    </div>
+    
+    <ul>
+        <li><a href="/"><i class="fa fa-home fa-lg"></i>Home</a></li>
+        <li><a href="/posts"><i class="fa fa-archive fa-lg"></i>Archives</a></li>
+        <li><a href="/tags/"><i class="fa fa-tags fa-lg"></i>Tags</a></li>
+        <li><a href="https://github.com/Limgmk" target="_blank"><i class=" fa fa-github fa-lg"></i>Github</a></li>
+        <li><a href="https://t.me/Limgmk" target="_blank"><i class="fa fa-telegram fa-lg"></i>Telegram</a></li>
+    </ul>
+</div><style>
+     
+    .header-bar {
+        width: calc(100% - var(--drawer-width));
+        height: var(--header-height);
+        margin-left: var(--drawer-width);
+        background-color: var(--theme-color);
+        position: fixed;
+        transition: var(--right-transtion);
+        z-index: 498;
+    }
+
+
+
+     
+    .header-widget {
+        float: left;
+        width: var(--header-height);
+        height: var(--header-height);
+        line-height: var(--header-height);
+        overflow: hidden;
+        text-align: center;
+        border-radius: 50%;
+        transition: 0.3s;
+        position: relative;
+        font-size: 15px;
+    }
+
+     
+    .header-widget.smalltitle-widget {
+
+        width: calc(100% - var(--header-height) * 3);
+        color: var(--theme-color);
+        border-radius: 0%;
+        font-size: 16px;
+        pointer-events: none;
+        transition: 0s;
+    }
+
+     
+    @media screen and (max-width: 1240px) {
+        .header-bar {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+</style>
+
+<div id="header-bar" class="header-bar">
+    <span id="drawer-toggle" class="header-widget drawer-toggle" onclick="changeDrawer()">
+        <i id="drawer-toggle-icon" class="fa fa-bars fa-inverse fa-lg"></i></span>
+    <div id="smalltitle" class="header-widget smalltitle-widget">Git 使用笔记: add/push 时忽略/替换指定行</div>
+    <span id="search-widget" class="header-widget search-widget" onclick="">
+        <i class="fa fa-search fa-inverse fa-lg"></i>
+    </span>
+    <span id="share-widget" class="header-widget share-widget" onclick="">
+        <i class="fa fa-share-alt fa-inverse fa-lg"></i>
+    </span>
+</div><div id="main" class="main"><style>
+    .header-title {
+        width: 100%;
+        height: calc(210px - var(--header-height));
+        background-color: var(--theme-color);
+    }
+
+    .column.col-mid {
+        display: flex;
+    }
+
+    .post-content-row {
+        width: calc(100% - var(--toc-width));
+        margin: 0;
+    }
+
+    .post-toc-row {
+        width: var(--toc-width);
+        text-align: left;
+    }
+
+    .post-content-card {
+        width: 100%;
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        margin-top: -120px;
+        min-height: 800px;
+        padding: 35px;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: left;
+        overflow: hidden;
+        word-break: break-all;
+    }
+
+    .post-title {
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        font-weight: 400;
+        line-height: 48px;
+        font-size: 32px;
+    }
+
+    .post-date {
+        font-family: source sans pro, helvetica neue, Arial, sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+        font-size: 14px;
+        color: #8a8a8a;
+    }
+
+    .post-content {
+        font-size: 15px;
+        line-height: 26px;
+        letter-spacing: 0.7px;
+    }
+
+    .post-content .highlight pre {
+        background-color: #E2F0FF;
+    }
+
+    .post-content h1:target,
+    .post-content h2:target,
+    .post-content h3:target,
+    .post-content h4:target,
+    .post-content h5:target,
+    .post-content h6:target {
+        padding-top: var(--header-height);
+        margin-top: calc(- var(--header-height));
+    }
+
+    @media screen and (max-width: 760px) {
+        .post-toc-row {
+            display: none;
+        }
+
+        :root {
+            --toc-width: 0px;
+        }
+    }
+
+    .row-footer-nav {
+        width: 100%;
+        height: 80px;
+        clear: both;
+    }
+
+    .col-footer-nav {
+        margin-top: 50px;
+        width: 47%;
+        height: 100%;
+    }
+
+    .col-footer-nav.prev {
+        padding-left: 20px;
+        text-align: left;
+        float: left;
+    }
+
+    .col-footer-nav.next {
+        padding-right: 20px;
+        text-align: right;
+        float: right;
+    }
+
+    .col-footer-nav h4 {
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        color: #3f51b5;
+        box-sizing: border-box;
+        margin: 0;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+        position: relative;
+        display: inline-block;
+    }
+</style>
+
+<div class="header-title">
+</div>
+
+<div class="row-main">
+    <div class="column col-mid">
+        <div class="post-content-row">
+            <div id="post-content-card" class="post-content-card">
+                <h1 class="post-title">Git 使用笔记: add/push 时忽略/替换指定行</h1>
+                <div class="post-date">2020年09月22日</div>
+                <div class="post-content" id="post-content"><h1 id="git-使用笔记-addpush-时忽略替换指定行"><strong>Git</strong> 使用笔记: add/push 时<strong>忽略/替换</strong>指定行</h1>
+<h2 id="问题">问题</h2>
+<p>最近做了一个 Telegram 的通知机器人, 但是每次推送代码的之前我都要在配置文件里面把机器人的 token 注释掉，<br>
+这样弄了几次以后，我终于决定找个让 Git 忽略指定行的方法。</p>
+<h2 id="1-git-filter-的使用">1. Git filter 的使用</h2>
+<p><a href="https://www.google.com"><strong>Google</strong></a> 了一番之后，我发现 Git 的 filter 功能大致可以实现想要的效果<br>
+首先先在项目中添加 .gitattributes 文件, 编辑并添加以下内容:</p>
+<pre><code>*.yaml filter=yaml
+</code></pre><p>意思是项目中所有的 YAML 文件都会使用名为 <strong>yaml</strong> 的过滤器<br>
+然后需要定义过滤规则, 在命令行执行:</p>
+<pre><code>git config --global filter.yaml.clean &quot;sed '/#GITIGNORE$/d'&quot;
+</code></pre><p>即为 Git 添加一个过滤器，使用该过滤器的文件在被 Git 管理时会通过 <code>sed '/#GITIGNORE$/d'</code> 过滤，<br>
+并将过滤后的结果加入管理。很明显，<code>sed '/#GITIGNORE$/d'</code> 的过滤结果就是将以 <strong>#GITIGNORE</strong><br>
+结尾的行删除。这样一来，只要在想要忽略的行后面加上 <strong>#GITIGNORE</strong> 就可以在提交代码时去掉这一行。</p>
+<h3 id="2-更复杂的功能">2. 更复杂的功能</h3>
+<p>上面的方法只能过滤一行，那么更加复杂的功能，比如过滤多行，甚至将某一行替换为任意想要的内容也可以做到吗？<br>
+当然可以，<code>sed</code> 十分强大，只要利用得当，上述功能都是可以实现的。</p>
+<h4 id="21-多行忽略">2.1 多行忽略</h4>
+<pre><code>$ cat config.yaml | sed '/^#GITIGNORE&lt;&lt;&lt;/,/^#GITIGNORE&gt;&gt;&gt;/d'
+</code></pre><p>效果: <strong>config.yaml</strong> 文件中 <strong>#GITIGNORE&laquo;&lt;</strong> 和 <strong>#GITIGNORE&raquo;&gt;</strong><br>
+两行中间的内容都会被删除</p>
+<h4 id="22-指定行替换指定内容">2.2 指定行替换指定内容</h4>
+<pre><code>$ cat config.yaml | sed '/^#GITREPLACE\(\s\+\)with/{n;/.*/d;}' | sed 's/#GITREPLACE\(\s\+\)with\(\s\+\)//'
+</code></pre><p>效果:</p>
+<pre><code>#GITREPLACE with host: limgmk.me
+host: localhost
+</code></pre><p>会被替换为:</p>
+<pre><code>host: limgmk.me
+</code></pre><h3 id="3-针对多种文件">3. 针对多种文件</h3>
+<p>很显然，上面的规则只适合用 <strong>#</strong> 进行注释的文件，对于其他的比如 <strong>C</strong>, <strong>Go</strong>, <strong>Java</strong> 等使用 <strong>//</strong><br>
+注释的代码就不能用了，因此可以进一步改进:</p>
+<pre><code>cat main.go | sed '/^\(\s*\)\(#\|\/\/\)GITIGNORE&lt;&lt;&lt;/,/^\(\s*\)\(#\|\/\/\)GITIGNORE&gt;&gt;&gt;/d' | sed '/\(#\|\/\/\)GITIGNORE\(\s*\)$/d' | sed '/^\(\s*\)\(#\|\/\/\)GITREPLACE\(\s\+\)with/{n;/.*/d;}' | sed 's/\(#\|\/\/\)GITREPLACE\(\s\+\)with\(\s\+\)//'
+</code></pre><p>(这里还考虑了空白字符开头的影响，如果有其他注释字符比如 &ldquo;<code>;</code>&rdquo; 加上去就行了)</p>
+<h3 id="4-写在脚本里">4. 写在脚本里</h3>
+<p>现在，如果打开 <strong>~/.gitconfig</strong> 看以下，就会发现里面长这样:</p>
+<pre><code>[filter &quot;default&quot;]
+    clean = &quot;sed '/^\\(\\s*\\)\\(#\\|\\/\\/\\)GITIGNORE&lt;&lt;&lt;/,/^\\(\\s*\\)\\(#\\|\\/\\/\\)GITIGNORE&gt;&gt;&gt;/d' | sed '/\\(#\\|\\/\\/\\)GITIGNORE\\(\\s*\\)$/d' | sed '/^\\(\\s*\\)\\(#\\|\\/\\/\\)GITREPLACE\\(\\s\\+\\)with/{n;/.*/d;}' | sed 's/\\(#\\|\\/\\/\\)GITREPLACE\\(\\s\\+\\)with\\(\\s\\+\\)//'&quot;
+</code></pre><p>转义符更多了，相当恐怖啊有木有。我们可以把 <code>sed</code> 命令写进单独的脚本里:</p>
+<pre><code>[filter &quot;default&quot;]
+     clean = &quot;/home/limgmk/.scripts/default-git-filter.sh&quot;
+</code></pre><p><strong>default-git-filter.sh</strong> 脚本的内容:</p>
+<pre><code>#! /usr/bin/env bash
+
+sed '/^\(\s*\)\(#\|\/\/\)GITIGNORE&lt;&lt;&lt;/,/^\(\s*\)\(#\|\/\/\)GITIGNORE&gt;&gt;&gt;/d' | \
+sed '/\(#\|\/\/\)GITIGNORE\(\s*\)$/d' | \
+sed '/^\(\s*\)\(#\|\/\/\)GITREPLACE\(\s\+\)with/{n;/.*/d;}' | \
+sed 's/\(#\|\/\/\)GITREPLACE\(\s\+\)with\(\s\+\)//'
+</code></pre><h3 id="5-用-go-实现一个过滤器">5. 用 Go 实现一个过滤器</h3>
+<p>项目地址: <a href="https://github.com/Limgmk/git-filter">https://github.com/Limgmk/git-filter</a><br>
+可以传入任意数量的参数作为注释符</p>
+<h3 id="6-未解决的问题">6. 未解决的问题</h3>
+<p>现在提交代码时过滤的功能实现了，但是当我们 <code>git pull</code> 时，如果新的更改包括了 filter 起作用的文件，<br>
+那么 <code>git pull</code> 后远程仓库的内容将会覆盖掉本地的内容。<br>
+当然，这种情况一般只会在多人协同工作时出现，因为如果远程仓库只有你一个人使用，那么本地永远都是最新的，<br>
+根本无需 <code>pull</code>。即使执行 <code>git pull</code> ，由于 git 没有检查到差异，也不会被覆盖。</p>
+</div>
+            </div><div class="row-footer-nav"><div class="col-footer-nav next">
+                    <a href="/posts/mysql-install-and-setting/">
+                        <h4>Ubuntu 20.04 上安装 MySQL 8.0 并配置远程登录&nbsp; &gt; </h4>
+                    </a>
+                </div></div></div>
+        <div class="post-toc-row">
+            <style>
+    .target-fix {
+        position: relative;
+         
+        height: var(--header-height);
+        margin-top: calc(0px - var(--header-height));
+        display: block;
+        visibility: hidden;
+    }
+
+    .post-toc-wrap {
+        padding-left: 30px;
+    }
+
+    .post-toc-wrap a {
+        text-decoration: none;
+    }
+
+    .post-toc-wrap a:hover {
+        color: var(--theme-color);
+        text-decoration: underline;
+    }
+</style>
+
+<nav class="post-toc-wrap" id="post-toc">
+    <h4>TOC</h4>
+    <ol class="post-toc">
+        <li class="post-toc-item post-toc-level-2 active"><a class="post-toc-link" href="#静态数据"><span
+                    class="post-toc-number">1.</span> <span class="post-toc-text">静态数据</span></a></li>
+        <li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#静态数据分离"><span
+                    class="post-toc-number">2.</span> <span class="post-toc-text">静态数据分离</span></a>
+            <ol class="post-toc-child post-toc-shrink">
+                <li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置、工具类数据"><span
+                            class="post-toc-number">2.1.</span> <span class="post-toc-text">配置、工具类数据</span></a></li>
+                <li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#枚举类数据"><span
+                            class="post-toc-number">2.2.</span> <span class="post-toc-text">枚举类数据</span></a></li>
+                <li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#i18n"><span
+                            class="post-toc-number">2.3.</span> <span class="post-toc-text">i18n</span></a></li>
+            </ol>
+        </li>
+        <li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#END"><span
+                    class="post-toc-number">3.</span> <span class="post-toc-text">END</span></a></li>
+    </ol>
+</nav>
+
+<script>
+    (function () {
+        createToc();
+
+        var as = document.getElementById("post-toc").querySelectorAll("a");
+        as.forEach(function (a, index) {
+            a.addEventListener("click", function () {
+                setActive(a);
+            })
+        });
+    })();
+
+    function setActive(a) {
+        removeActive();
+        $(a.parentNode).addClass("active");
+        closeOl(a.parentNode);
+        var ols = a.parentNode.querySelectorAll("ol");
+        if (ols.length > 0) {
+            var ol = ols[0];
+            $(ol).removeClass("post-toc-shrink");
+            $(ol).addClass("post-toc-expand");
+        }
+    }
+
+    function removeActive() {
+        var lis = document.getElementById("post-toc").querySelectorAll("li.active");
+        lis.forEach(function (li, index) {
+            $(li).removeClass("active");
+        })
+    }
+
+    function closeOl(li) {
+        var lis = li.parentNode.children;
+        for (var i = 0, len = lis.length; i < len; i++) {
+            var item = lis[i];
+            if (item !== li) {
+                var ols = item.querySelectorAll("ol.post-toc-child");
+                console.log(ols);
+                ols.forEach(function (ol, index) {
+                    $(ol).removeClass("post-toc-expand");
+                    $(ol).addClass("post-toc-shrink");
+                });
+            }
+        }
+    }
+
+    function createToc() {
+        var code = ``;
+        var hs = document.getElementById("post-content").querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+        console.log("hs: " + hs);
+        hs.forEach(function (h, index) {
+            console.log(h.innerHTML);
+            var target = document.createElement("a");
+            target.setAttribute("class", "target-fix");
+            target.setAttribute("id", h.getAttribute("id") + "-target");
+            h.parentNode.insertBefore(target, h);
+        });
+
+        var toc = new Array();
+        var first = new Object();
+
+        first.id = hs[0].getAttribute("id");
+        first.lv = getLv(hs[0]);
+        first.text = hs[0].innerText;
+        first.children = null;
+
+        toc.push(first);
+
+        for (var i = 1, len = hs.length; i < len; i++) {
+
+            var lv = getLv(hs[i]);
+            var h = new Object();
+            h.id = hs[i].getAttribute("id");
+            h.lv = lv;
+            h.text = hs[i].innerText;
+            h.children = null;
+
+            if (lv <= getLv(hs[i - 1])) {
+                add(toc, h);
+            } else {
+                setChildren(toc, h);
+            }
+        }
+        
+        var h = toc[0];
+        code += `<li class="post-toc-item post-toc-level-` + h.lv + ` active"><a class="post-toc-link" href="#` + h.id + `-target"><span
+                    class="post-toc-number"></span> <span class="post-toc-text">` + h.text + `</span></a>` + childrenCode(h) + `</li>`
+        for (var i = 1, len = toc.length; i < len; i++) {
+            var h = toc[i];
+            code += `<li class="post-toc-item post-toc-level-` + h.lv + `"><a class="post-toc-link" href="#` + h.id + `-target"><span
+                    class="post-toc-number"></span> <span class="post-toc-text">` + h.text + `</span></a>` + childrenCode(h) + `</li>`
+        }
+
+        code = `<h4>TOC</h4><ol class="post-toc">` + code + `</ol>`
+        
+        var nav = document.getElementById("post-toc");
+        nav.innerHTML = code;
+    }
+    function add(toc, h) {
+        var latest = toc[toc.length - 1];
+        if (latest.lv == h.lv) {
+            toc.push(h);
+            return;
+        } else {
+            add(latest.children, h);
+        }
+    }
+
+    function setChildren(toc, h) {
+        var latest = toc[toc.length - 1];
+        if (latest.children == null) {
+            latest.children = new Array();
+            latest.children.push(h);
+        } else {
+            setChildren(latest.children, h);
+        }
+    }
+
+    function childrenCode(toc) {
+        var code = "";
+        if (toc.children != null) {
+            for (var i = 0, len = toc.children.length; i < len; i++) {
+                var h = toc.children[i];
+                code += `<li class="post-toc-item post-toc-level-` + h.lv + `"><a class="post-toc-link" href="#` + h.id + `-target"><span
+                    class="post-toc-number"></span> <span class="post-toc-text">` + h.text + `</span></a>` + childrenCode(h) + `</li>`
+            }
+            return `<ol class="post-toc-child post-toc-shrink">` + code + `</ol>`;
+        }
+        return "";
+    }
+
+    function getLv(h) {
+        return h.tagName.substring(1);
+    }
+</script>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        removeHighlight();
+    })();
+
+    function removeHighlight() {
+        var pre = $(".post-content .highlight pre");
+        for (var i = 0, len = pre.length; i < len; i++) {
+            pre[i].removeAttribute("style");
+        }
+    }
+</script></div><style>
+    .footer {
+        width: calc(100% - var(--drawer-width));
+        margin: 0 0 0 var(--drawer-width);
+        padding: 0;
+        text-align: center;
+        float: right;
+        transition: var(--right-transtion);
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer.footer-top {
+        line-height: 27px;
+        font-size: 14px;
+        background-color: var(--theme-color);
+        height: 52px;
+    }
+
+    .footer.footer-bottom {
+        background-color: #303F9F;
+        height: 72px;
+    }
+
+    .footer-hugo {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        line-height: 1.6;
+        font-size: 13px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="footer footer-top">
+    <p>This is My Notes</p>
+</div>
+<div id="footer-bottom" class="footer footer-bottom">
+    <div class="footer-hugo">
+        <p>Created with Hugo | Theme - Leem</p>
+        <p>© 2020-Now by Limgmk</p>
+    </div>
+</div><style>
+     
+    .main-mask {
+        visibility: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 499;
+        width: 100%;
+        height: 150%;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+
+     
+    @media screen and (max-width: 1240px) {
+
+        .main-mask.in {
+            visibility: visible;
+            pointer-events: auto;
+            opacity: .3;
+        }
+    }
+</style>
+
+<div id="main-mask" class="main-mask" onmousedown="changeDrawer()"></div>
+
+<script>
+    (function () {
+        if (jundgeDrawerStatus()) {
+            openMask();
+        }
+    })();
+</script>
+</body>
+
+</html>

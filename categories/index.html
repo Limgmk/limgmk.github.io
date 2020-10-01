@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
+    <title>Limgmk's Blog</title>
+
+    <script src="/lib/jquery/jquery.js"></script>
+    <script defer src="/js/ripple.js"></script>
+    <script src="/js/leem.js"></script>
+    <script src="/lib/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/ripple.css">
+    <link rel="stylesheet" href="/css/leem.css">
+    <link rel="stylesheet" href="/css/md.css" />
+    <link rel="stylesheet" href="/lib/highlight/styles/default.css">
+    <link rel=" stylesheet" href="/css/toc.css" />
+</head><body><style>
+     
+    .drawer {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: var(--drawer-width);
+        background-color: #ffffff;
+        position: fixed;
+        height: 150%;
+        overflow: auto;
+        box-shadow: 0 1px 5px rgba(49, 49, 49, 0.6);
+        transition: 0.3s;
+        z-index: 500;
+    }
+
+    .drawer-brand {
+        width: 100%;
+        height: 209px;
+        padding-left: 30px;
+        background-color: #3E66D1;
+        color: #ffffff;
+    }
+
+    .user-favicon {
+        width: 100px;
+        height: 100px;
+        border-radius: 100px;
+    }
+
+    .drawer-brand h4 {
+        margin: 10px 0;
+    }
+
+    .drawer-brand .email {
+        font-size: 13px;
+        color: #ffffff;
+    }
+
+    .drawer-brand .email:hover {
+        text-decoration: #ffffff;
+    }
+
+    .drawer ul {
+        padding: 0;
+        list-style: none;
+        list-style-type: none;
+        width: 100%;
+        margin: 0 atuo;
+        display: block;
+    }
+
+    .drawer li {
+        width: 240px;
+        padding: 0 20px;
+        list-style-type: none;
+        margin: 0 atuo;
+        display: block;
+        font-size: 15px;
+    }
+
+    .drawer li:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .drawer li a {
+        display: block;
+        height: 44px;
+        line-height: 44px;
+        font-weight: 600;
+        color: #727272;
+        text-decoration: none;
+    }
+
+    .drawer li a:hover {
+        color: var(--theme-color);
+    }
+
+    .drawer li a i {
+        width: 48px;
+        text-align: left;
+    }
+</style>
+
+<div id="drawer" class="drawer">
+    <div id="drawer-brand" class="drawer-brand vertical-center">
+        
+        <div>
+            <img class="user-favicon" src="/img/user-favicon-white.jpg">
+            <h4>Limgmk</h4>
+            <a class="email" href="mailto:limgmkgm@gmail.com" target="_blank">limgmkgm@gmail.com</a>
+        </div>
+    </div>
+    
+    <ul>
+        <li><a href="/"><i class="fa fa-home fa-lg"></i>Home</a></li>
+        <li><a href="/posts"><i class="fa fa-archive fa-lg"></i>Archives</a></li>
+        <li><a href="/tags/"><i class="fa fa-tags fa-lg"></i>Tags</a></li>
+        <li><a href="https://github.com/Limgmk" target="_blank"><i class=" fa fa-github fa-lg"></i>Github</a></li>
+        <li><a href="https://t.me/Limgmk" target="_blank"><i class="fa fa-telegram fa-lg"></i>Telegram</a></li>
+    </ul>
+</div><style>
+     
+    .header-bar {
+        width: calc(100% - var(--drawer-width));
+        height: var(--header-height);
+        margin-left: var(--drawer-width);
+        background-color: var(--theme-color);
+        position: fixed;
+        transition: var(--right-transtion);
+        z-index: 498;
+    }
+
+
+
+     
+    .header-widget {
+        float: left;
+        width: var(--header-height);
+        height: var(--header-height);
+        line-height: var(--header-height);
+        overflow: hidden;
+        text-align: center;
+        border-radius: 50%;
+        transition: 0.3s;
+        position: relative;
+        font-size: 15px;
+    }
+
+     
+    .header-widget.smalltitle-widget {
+
+        width: calc(100% - var(--header-height) * 3);
+        color: var(--theme-color);
+        border-radius: 0%;
+        font-size: 16px;
+        pointer-events: none;
+        transition: 0s;
+    }
+
+     
+    @media screen and (max-width: 1240px) {
+        .header-bar {
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+</style>
+
+<div id="header-bar" class="header-bar">
+    <span id="drawer-toggle" class="header-widget drawer-toggle" onclick="changeDrawer()">
+        <i id="drawer-toggle-icon" class="fa fa-bars fa-inverse fa-lg"></i></span>
+    <div id="smalltitle" class="header-widget smalltitle-widget">Categories</div>
+    <span id="search-widget" class="header-widget search-widget" onclick="">
+        <i class="fa fa-search fa-inverse fa-lg"></i>
+    </span>
+    <span id="share-widget" class="header-widget share-widget" onclick="">
+        <i class="fa fa-share-alt fa-inverse fa-lg"></i>
+    </span>
+</div><div id="main" class="main"><style>
+    :root {
+        --drawer-width: 240px;
+    }
+
+     
+    .row-archive {
+        width: 100%;
+        overflow: hidden;
+        padding-top: 20px;
+    }
+
+
+    .col-archive {
+        width: 50%;
+        float: left;
+        padding: 0 10px;
+    }
+
+    .archive-time {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        line-height: 32px;
+        margin: 35px 0 13px;
+        color: #3f51b5;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        padding-left: 10px;
+    }
+
+     
+    .home-title {
+        text-align: left;
+        width: 100%;
+        height: 174px;
+         
+        background-color: var(--theme-color);
+        padding: 30px calc((100% - 960px)/2);
+    }
+
+    .home-title h1 {
+        margin: 0;
+        padding: 0;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 44px;
+    }
+
+    .home-title h5 {
+        margin: 0;
+        padding: 12px 0 0;
+        color: #c5cae9;
+        font-weight: 500;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+     
+    .article-card {
+        text-align: left;
+        width: 100%;
+         
+        margin: 10px 0;
+        background: #ffffff;
+        border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(151, 151, 151, 0.6);
+    }
+
+    .article-card:hover {
+        box-shadow: 0 2px 6px rgba(151, 151, 151, 0.6);
+    }
+
+     
+    .article-card-top {
+        width: 100%;
+        padding: 16px 16px 0px;
+        background: #ffffff;
+        text-align: left;
+         
+    }
+
+     
+    .post-meta {
+        margin: 0 0 10px;
+        line-height: 14px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #727272;
+        overflow: hidden;
+    }
+
+     
+    .article-card .post-time {
+        line-height: 24px;
+        font-weight: bold;
+    }
+
+     
+    .post-title {
+        margin: 0 0 16px;
+        font-size: 24px;
+        line-height: 24px;
+        display: inline-block;
+    }
+
+     
+    .post-title-link,
+    .post-title-link:link,
+    .post-title-link:visited,
+    .post-title-link:focus {
+        color: #3f51b5;
+         
+        background-color: transparent;
+        background-image: none;
+        text-decoration: none;
+        outline: 0;
+        font-weight: 400;
+         
+    }
+
+    .post-title-link:after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 2px;
+        margin: 2px 0 0;
+        padding: 0;
+         
+         
+        background: #3f51b5;
+        transition: all 0.3s ease-in-out;
+        transform: scale3d(0, 1, 1);
+        transform-origin: 50% 0;
+    }
+
+    .post-title-link:hover::after {
+        transform: scale3d(1, 1, 1);
+    }
+
+     
+    .post-content-preview {
+        word-break: break-all;
+        padding-bottom: 20px;
+        line-height: 1.8;
+        color: #212121;
+        font-size: 15px;
+    }
+
+     
+    .post-readmore {
+        display: inline-block;
+        padding: 0 6px;
+        font-weight: 500;
+        color: #3f51b5 !important;
+        background-color: transparent;
+        background-image: none;
+        border: none !important;
+        border-radius: 3px;
+        text-decoration: none;
+        outline: 0;
+    }
+
+    .post-readmore:hover {
+        background-color: #eaecf7;
+    }
+
+     
+    .article-card-tags {
+        width: 100%;
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        list-style: none;
+        box-sizing: border-box;
+        position: relative;
+        border-top: 1px solid #ddd;
+        margin: 0;
+        padding: 12px 20px 8px;
+    }
+
+     
+    .article-tag-list {
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        list-style: none;
+        box-sizing: border-box;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        font-size: 13px;
+    }
+
+    .article-tag-list-item {
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        list-style: none;
+        font-size: 13px;
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 0 8px 8px 0;
+        border-radius: 2px;
+    }
+
+    .article-tag-list-item.color-0 {
+        background-color: #8BC34A;
+    }
+
+    .article-tag-list-item.color-1 {
+        background-color: #673AB7;
+    }
+
+    .article-tag-list-item.color-2 {
+        background-color: #FF9800;
+    }
+
+    .article-tag-list-item.color-3 {
+        background-color: #F44336;
+    }
+
+    .article-tag-list-item.color-4 {
+        background-color: #00ABC0;
+    }
+
+    .article-tag-list-item.color-5 {
+        background-color: #2196F3;
+    }
+
+    .article-tag-list-item.color-6 {
+        background-color: #FBC02D;
+    }
+
+    .article-tag-list-item.color-7 {
+        background-color: #272727;
+    }
+
+    .article-tag-list-link {
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        list-style: none;
+        box-sizing: border-box;
+        background-image: none;
+        position: relative;
+        overflow: hidden;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transform: translateZ(0);
+        border-radius: .2em;
+        display: block;
+        padding: 0 16px;
+        line-height: 28px;
+        color: rgba(255, 255, 255, 0.8);
+        transition: .2s ease-in-out;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0);
+        font-size: 1em;
+        text-align: center;
+        text-decoration: none;
+        z-index: 1;
+    }
+
+    .article-tag-list-item:hover {
+        box-shadow: 0 1px 5px rgba(75, 73, 73, 0.6);
+    }
+
+     
+    @media screen and (max-width: 1000px) and (min-width: 760px) {
+        .home-title {
+            padding: 30px 20px;
+        }
+    }
+
+     
+    @media screen and (max-width: 760px) {
+
+        .column.col-mid {
+            --margin-side: 0;
+        }
+
+        .col-archive {
+            width: 100%;
+            margin: 0;
+        }
+
+        .home-title {
+            padding: 50px 20px;
+        }
+
+        .home-title h1 {
+            font-size: 24px;
+        }
+
+        .home-title h5 {
+            font-size: 14px;
+        }
+    }
+</style>
+<div class="home-title vertical-center">
+    <div>
+        <h1>Tags</h1>
+    </div>
+</div>
+
+<div class="row-main">
+    <div class="column col-mid"><div class="row-archive"></div><style>
+     
+    .pagination {
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        margin: 30px 0 0;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .pagination .inner {
+        color: #212121;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        text-align: center;
+        box-sizing: border-box;
+        display: inline-block;
+    }
+
+    .pagination .inner a.prev-page {
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        background-image: none;
+        position: relative;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transform: translateZ(0);
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        z-index: 1;
+        display: inline-block;
+        line-height: 34px;
+        padding: 0 1em;
+        margin: 0 2px;
+        font-size: 14px;
+        color: #727272;
+        border-radius: 3px;
+        overflow: hidden;
+        transition: .4s ease-in-out;
+    }
+
+    .pagination .inner a.page-number {
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        background-image: none;
+        position: relative;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transform: translateZ(0);
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        z-index: 1;
+        display: inline-block;
+        line-height: 34px;
+        padding: 0 1em;
+        margin: 0 2px;
+        font-size: 14px;
+        color: #727272;
+        border-radius: 3px;
+        overflow: hidden;
+        transition: .4s ease-in-out;
+    }
+
+    .pagination .inner a.next-page {
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        background-image: none;
+        position: relative;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transform: translateZ(0);
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background-color: rgba(0, 0, 0, 0);
+        text-align: center;
+        text-decoration: none;
+        z-index: 1;
+        display: inline-block;
+        line-height: 34px;
+        padding: 0 1em;
+        margin: 0 2px;
+        font-size: 14px;
+        color: #727272;
+        border-radius: 3px;
+        overflow: hidden;
+        transition: .4s ease-in-out;
+    }
+
+    .pagination .inner a:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: var(--theme-color);
+    }
+
+    .pagination .inner a.page-number.now {
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        box-sizing: border-box;
+        position: relative;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transform: translateZ(0);
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        text-align: center;
+        text-decoration: none;
+        z-index: 1;
+        display: inline-block;
+        line-height: 34px;
+        padding: 0 1em;
+        margin: 0 2px;
+        font-size: 14px;
+        border-radius: 3px;
+        overflow: hidden;
+        transition: .4s ease-in-out;
+        color: #fff;
+        background: var(--theme-color);
+    }
+</style>
+
+<div class="pagination">
+    <div class="inner"><a class="page-number now" href="/categories/">1</a></div>
+</div>
+
+<script>
+    function jumpPage(pageNumber) {
+        console.log(pageNumber);
+        window.location.href = "/page/" + pageNumber;
+    }
+</script></div>
+</div>
+
+<script>
+    (function () {
+        
+        sideNavHighlight("Tags");
+
+        chageDateFormat();
+
+    })();
+
+    function chageDateFormat() {
+        console.log("Hello")
+        var dates = document.querySelectorAll(".archive-time");
+        dates.forEach(function (date, index) {
+            var m = date.innerText.substring(0, 2);
+            switch (m) {
+                case "01":
+                    m = "一";
+                    break;
+                case "02":
+                    m = "二";
+                    break;
+                case "03":
+                    m = "三";
+                    break;
+                case "04":
+                    m = "四";
+                    break;
+                case "05":
+                    m = "五";
+                    break;
+                case "06":
+                    m = "六";
+                    break;
+                case "07":
+                    m = "七";
+                    break;
+                case "08":
+                    m = "八";
+                    break;
+                case "09":
+                    m = "九";
+                    break;
+                case "10":
+                    m = "十";
+                    break;
+                case "11":
+                    m = "十一";
+                    break;
+                case "12":
+                    m = "十二";
+                    break;
+            }
+            date.innerHTML = m + date.innerHTML.substring(2);
+        });
+    }
+</script></div><style>
+    .footer {
+        width: calc(100% - var(--drawer-width));
+        margin: 0 0 0 var(--drawer-width);
+        padding: 0;
+        text-align: center;
+        float: right;
+        transition: var(--right-transtion);
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer.footer-top {
+        line-height: 27px;
+        font-size: 14px;
+        background-color: var(--theme-color);
+        height: 52px;
+    }
+
+    .footer.footer-bottom {
+        background-color: #303F9F;
+        height: 72px;
+    }
+
+    .footer-hugo {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        font: normal 1em Roboto, "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+        line-height: 1.6;
+        font-size: 13px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="footer footer-top">
+    <p>This is My Notes</p>
+</div>
+<div id="footer-bottom" class="footer footer-bottom">
+    <div class="footer-hugo">
+        <p>Created with Hugo | Theme - Leem</p>
+        <p>© 2020-Now by Limgmk</p>
+    </div>
+</div><style>
+     
+    .main-mask {
+        visibility: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 499;
+        width: 100%;
+        height: 150%;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+
+     
+    @media screen and (max-width: 1240px) {
+
+        .main-mask.in {
+            visibility: visible;
+            pointer-events: auto;
+            opacity: .3;
+        }
+    }
+</style>
+
+<div id="main-mask" class="main-mask" onmousedown="changeDrawer()"></div>
+
+<script>
+    (function () {
+        if (jundgeDrawerStatus()) {
+            openMask();
+        }
+    })();
+</script>
+</body>
+
+</html>
